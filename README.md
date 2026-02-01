@@ -97,6 +97,27 @@ Hermione focuses on **test coverage**—making sure your code is properly verifi
 
 Together, they ensure your codebase is tested, secure, and up to date.
 
+## Infrastructure
+
+Hermione runs in the `agents` namespace on Kubernetes with isolated access to shared infrastructure:
+
+### PostgreSQL
+- **Database:** `agent_hermione` (isolated)
+- **User:** `agent_hermione_user` (restricted to own database)
+- **Isolation:** Database-level with `REVOKE` on other databases
+
+### Qdrant
+- **Instance:** `qdrant-agent-hermione.agents.svc.cluster.local` (dedicated)
+- **Isolation:** Instance-level with unique API key
+- **Purpose:** Vector storage for test pattern embeddings and coverage analysis
+
+### Redis
+- **Instance:** Shared cluster
+- **Key prefix:** `agent-hermione:`
+- **Isolation:** Key prefix convention
+
+This isolation ensures Hermione cannot access data from other agents and vice versa.
+
 ## License
 
 MIT
