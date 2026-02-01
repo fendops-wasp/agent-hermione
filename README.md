@@ -91,9 +91,9 @@ Like the character who couldn't stand seeing her classmates struggle with materi
 
 Hermione focuses on **test coverage**—making sure your code is properly verified.
 
-[MacGyver](https://github.com/phystack/agent-macgyver) handles **dependency updates and CodeQL alerts**—keeping third-party packages secure and addressing automated code scanning findings.
+[MacGyver](https://github.com/fendops-wasp/agent-macgyver) handles **dependency updates and CodeQL alerts**—keeping third-party packages secure and addressing automated code scanning findings.
 
-[Elliot](https://github.com/phystack/agent-elliot) performs **security analysis**—finding vulnerabilities by thinking like an attacker.
+[Elliot](https://github.com/fendops-wasp/agent-elliot) performs **security analysis**—finding vulnerabilities by thinking like an attacker.
 
 Together, they ensure your codebase is tested, secure, and up to date.
 
