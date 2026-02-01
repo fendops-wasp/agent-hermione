@@ -13,6 +13,33 @@ Hermione keeps a watchful eye on your test coverage and takes action:
 3. **Writes comprehensive tests** that actually verify behavior, not just hit lines
 4. **Submits PRs** with clear explanations of what's now covered
 5. **Tracks coverage over time** to ensure the codebase trends upward
+6. **Validates lock file integrity** to catch broken dependency states
+
+### Lock File Validation
+
+Hermione checks that `yarn.lock` and `package-lock.json` files are properly committed and in sync with `package.json`. A PR is considered broken if:
+
+- Running `npm install` or `yarn install` modifies the lock file
+- The lock file was updated but not committed
+- The lock file is missing when it should exist
+- There's a mismatch between `package.json` and the lock file
+
+This catches a common issue: developers run `npm install` locally, dependencies resolve correctly, but they forget to commit the updated lock file. The next person who clones the repo gets different dependency versions, leading to "works on my machine" problems.
+
+Example comment when Hermione finds this:
+```
+The package-lock.json in this PR is out of sync with package.json.
+
+Running `npm install` produces a different lock file than what's committed.
+This means:
+- Other developers will get different dependency versions
+- CI builds won't match local builds
+- You might be shipping untested dependency combinations
+
+Please run `npm install` and commit the updated package-lock.json.
+
+This isn't optional. Lock files exist for a reason.
+```
 
 ### Types of Tests Hermione Writes
 
@@ -51,6 +78,7 @@ This perfectly captures the spirit of a test coverage agent. Hermione genuinely 
 - "I've added 47 tests. You're welcome."
 - "This function has six code paths and zero tests. *Six.*"
 - "I don't know why I bother. Actually, I do. Because someone has to."
+- "The lock file is out of sync. Did no one run `npm install`?"
 
 ### Communication Style
 
@@ -89,7 +117,7 @@ Like the character who couldn't stand seeing her classmates struggle with materi
 
 ## Relationship with the Team
 
-Hermione focuses on **test coverage**—making sure your code is properly verified.
+Hermione focuses on **test coverage and build integrity**—making sure your code is properly verified and dependencies are correctly managed.
 
 [MacGyver](https://github.com/fendops-wasp/agent-macgyver) handles **dependency updates and CodeQL alerts**—keeping third-party packages secure and addressing automated code scanning findings.
 
